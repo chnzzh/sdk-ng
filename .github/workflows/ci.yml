@@ -94,7 +94,7 @@ jobs:
   # Setup
   setup:
     name: Setup
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     outputs:
       hosts: ${{ steps.generate-matrix.outputs.hosts }}
       targets: ${{ steps.generate-matrix.outputs.targets }}
@@ -327,7 +327,7 @@ jobs:
 
         if [ "${build_host_linux_x86_64}" == "y" ]; then
           MATRIX_TESTENVS+='{
-              "name": "ubuntu-20.04-x86_64",
+              "name": "ubuntu-24.04-x86_64",
               "runner": "zephyr-runner-v2-linux-x64-4xlarge",
               "container": "ghcr.io/zephyrproject-rtos/ci:master",
               "bundle-host": "linux-x86_64",
@@ -337,7 +337,7 @@ jobs:
 
         if [ "${build_host_linux_aarch64}" == "y" ]; then
           MATRIX_TESTENVS+='{
-              "name": "ubuntu-20.04-aarch64",
+              "name": "ubuntu-24.04-aarch64",
               "runner": "zephyr-runner-v2-linux-arm64-4xlarge",
               "container": "ghcr.io/zephyrproject-rtos/ci:master",
               "bundle-host": "linux-aarch64",
@@ -1649,7 +1649,7 @@ jobs:
   test-result:
     name: Test Result
     needs: [ test-dist-bundle ]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     # NOTE: The 'test-result' job depends on the 'test-dist-bundle' job and
     #       therefore only runs when all distribution bundle tests pass.
