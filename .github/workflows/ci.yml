@@ -24,7 +24,7 @@ on:
       zephyr-ref:
         description: 'Zephyr Ref (branch, tag, SHA, ...)'
         required: true
-        default: collab-sdk-dev
+        default: main
       host:
         description: 'Host'
         type: choice
@@ -50,6 +50,7 @@ on:
         - mips-zephyr-elf
         - nios2-zephyr-elf
         - riscv64-zephyr-elf
+        - rx-zephyr-elf
         - sparc-zephyr-elf
         - x86_64-zephyr-elf
         - xtensa-amd_acp_6_0_adsp_zephyr-elf
@@ -61,6 +62,9 @@ on:
         - xtensa-intel_ace30_ptl_zephyr-elf
         - xtensa-intel_tgl_adsp_zephyr-elf
         - xtensa-mtk_mt8195_adsp_zephyr-elf
+        - xtensa-mtk_mt818x_adsp_zephyr-elf
+        - xtensa-mtk_mt8196_adsp_zephyr-elf
+        - xtensa-mtk_mt8365_adsp_zephyr-elf
         - xtensa-nxp_imx_adsp_zephyr-elf
         - xtensa-nxp_imx8m_adsp_zephyr-elf
         - xtensa-nxp_imx8ulp_adsp_zephyr-elf
@@ -88,7 +92,7 @@ env:
   BUG_URL: 'https://github.com/zephyrproject-rtos/sdk-ng/issues'
   BUNDLE_NAME: Zephyr SDK
   BUNDLE_PREFIX: zephyr-sdk
-  ZEPHYR_REF: collab-sdk-dev
+  ZEPHYR_REF: v4.2-branch
 
 jobs:
   # Setup
@@ -168,6 +172,7 @@ jobs:
             mips-zephyr-elf)                      build_target_mips_zephyr_elf="y";;
             nios2-zephyr-elf)                     build_target_nios2_zephyr_elf="y";;
             riscv64-zephyr-elf)                   build_target_riscv64_zephyr_elf="y";;
+            rx-zephyr-elf)                        build_target_rx_zephyr_elf="y";;
             sparc-zephyr-elf)                     build_target_sparc_zephyr_elf="y";;
             x86_64-zephyr-elf)                    build_target_x86_64_zephyr_elf="y";;
             xtensa-amd_acp_6_0_adsp_zephyr-elf)   build_target_xtensa_amd_acp_6_0_adsp_zephyr_elf="y";;
@@ -179,6 +184,9 @@ jobs:
             xtensa-intel_ace30_ptl_zephyr-elf)   build_target_xtensa_intel_ace30_ptl_zephyr_elf="y";;
             xtensa-intel_tgl_adsp_zephyr-elf)     build_target_xtensa_intel_tgl_adsp_zephyr_elf="y";;
             xtensa-mtk_mt8195_adsp_zephyr-elf)    build_target_xtensa_mtk_mt8195_adsp_zephyr_elf="y";;
+            xtensa-mtk_mt818x_adsp_zephyr-elf)    build_target_xtensa_mtk_mt818x_adsp_zephyr_elf="y";;
+            xtensa-mtk_mt8196_adsp_zephyr-elf)    build_target_xtensa_mtk_mt8196_adsp_zephyr_elf="y";;
+            xtensa-mtk_mt8365_adsp_zephyr-elf)    build_target_xtensa_mtk_mt8365_adsp_zephyr_elf="y";;
             xtensa-nxp_imx_adsp_zephyr-elf)       build_target_xtensa_nxp_imx_adsp_zephyr_elf="y";;
             xtensa-nxp_imx8m_adsp_zephyr-elf)     build_target_xtensa_nxp_imx8m_adsp_zephyr_elf="y";;
             xtensa-nxp_imx8ulp_adsp_zephyr-elf)   build_target_xtensa_nxp_imx8ulp_adsp_zephyr_elf="y";;
@@ -214,6 +222,7 @@ jobs:
           build_target_mips_zephyr_elf="y"
           build_target_nios2_zephyr_elf="y"
           build_target_riscv64_zephyr_elf="y"
+          build_target_rx_zephyr_elf="y"
           build_target_sparc_zephyr_elf="y"
           build_target_x86_64_zephyr_elf="y"
           build_target_xtensa_amd_acp_6_0_adsp_zephyr_elf="y"
@@ -225,6 +234,9 @@ jobs:
           build_target_xtensa_intel_ace30_ptl_zephyr_elf="y"
           build_target_xtensa_intel_tgl_adsp_zephyr_elf="y"
           build_target_xtensa_mtk_mt8195_adsp_zephyr_elf="y"
+          build_target_xtensa_mtk_mt818x_adsp_zephyr_elf="y"
+          build_target_xtensa_mtk_mt8196_adsp_zephyr_elf="y"
+          build_target_xtensa_mtk_mt8365_adsp_zephyr_elf="y"
           build_target_xtensa_nxp_imx_adsp_zephyr_elf="y"
           build_target_xtensa_nxp_imx8m_adsp_zephyr_elf="y"
           build_target_xtensa_nxp_imx8ulp_adsp_zephyr_elf="y"
@@ -247,7 +259,7 @@ jobs:
           MATRIX_HOSTS+='{
               "name": "linux-x86_64",
               "runner": "zephyr-runner-v2-linux-x64-4xlarge",
-              "container": "ghcr.io/zephyrproject-rtos/sdk-build:v1.3.2",
+              "container": "ghcr.io/zephyrproject-rtos/sdk-build:v1.3.9",
               "archive": "tar.xz"
             },'
         fi
@@ -256,7 +268,7 @@ jobs:
           MATRIX_HOSTS+='{
               "name": "linux-aarch64",
               "runner": "zephyr-runner-v2-linux-arm64-4xlarge",
-              "container": "ghcr.io/zephyrproject-rtos/sdk-build:v1.3.2",
+              "container": "ghcr.io/zephyrproject-rtos/sdk-build:v1.3.9",
               "archive": "tar.xz"
             },'
         fi
@@ -283,7 +295,7 @@ jobs:
           MATRIX_HOSTS+='{
               "name": "windows-x86_64",
               "runner": "zephyr-runner-v2-linux-x64-4xlarge",
-              "container": "ghcr.io/zephyrproject-rtos/sdk-build:v1.3.2",
+              "container": "ghcr.io/zephyrproject-rtos/sdk-build:v1.3.9",
               "archive": "7z"
             },'
         fi
@@ -300,6 +312,7 @@ jobs:
         [ "${build_target_mips_zephyr_elf}" == "y" ]                      && MATRIX_TARGETS+='"mips-zephyr-elf",'
         [ "${build_target_nios2_zephyr_elf}" == "y" ]                     && MATRIX_TARGETS+='"nios2-zephyr-elf",'
         [ "${build_target_riscv64_zephyr_elf}" == "y" ]                   && MATRIX_TARGETS+='"riscv64-zephyr-elf",'
+        [ "${build_target_rx_zephyr_elf}" == "y" ]                        && MATRIX_TARGETS+='"rx-zephyr-elf",'
         [ "${build_target_sparc_zephyr_elf}" == "y" ]                     && MATRIX_TARGETS+='"sparc-zephyr-elf",'
         [ "${build_target_x86_64_zephyr_elf}" == "y" ]                    && MATRIX_TARGETS+='"x86_64-zephyr-elf",'
         [ "${build_target_xtensa_amd_acp_6_0_adsp_zephyr_elf}" == "y" ]   && MATRIX_TARGETS+='"xtensa-amd_acp_6_0_adsp_zephyr-elf",'
@@ -311,6 +324,9 @@ jobs:
         [ "${build_target_xtensa_intel_ace30_ptl_zephyr_elf}" == "y" ]   && MATRIX_TARGETS+='"xtensa-intel_ace30_ptl_zephyr-elf",'
         [ "${build_target_xtensa_intel_tgl_adsp_zephyr_elf}" == "y" ]     && MATRIX_TARGETS+='"xtensa-intel_tgl_adsp_zephyr-elf",'
         [ "${build_target_xtensa_mtk_mt8195_adsp_zephyr_elf}" == "y" ]    && MATRIX_TARGETS+='"xtensa-mtk_mt8195_adsp_zephyr-elf",'
+        [ "${build_target_xtensa_mtk_mt818x_adsp_zephyr_elf}" == "y" ]    && MATRIX_TARGETS+='"xtensa-mtk_mt818x_adsp_zephyr-elf",'
+        [ "${build_target_xtensa_mtk_mt8196_adsp_zephyr_elf}" == "y" ]    && MATRIX_TARGETS+='"xtensa-mtk_mt8196_adsp_zephyr-elf",'
+        [ "${build_target_xtensa_mtk_mt8365_adsp_zephyr_elf}" == "y" ]    && MATRIX_TARGETS+='"xtensa-mtk_mt8365_adsp_zephyr-elf",'
         [ "${build_target_xtensa_nxp_imx_adsp_zephyr_elf}" == "y" ]       && MATRIX_TARGETS+='"xtensa-nxp_imx_adsp_zephyr-elf",'
         [ "${build_target_xtensa_nxp_imx8m_adsp_zephyr_elf}" == "y" ]     && MATRIX_TARGETS+='"xtensa-nxp_imx8m_adsp_zephyr-elf",'
         [ "${build_target_xtensa_nxp_imx8ulp_adsp_zephyr_elf}" == "y" ]   && MATRIX_TARGETS+='"xtensa-nxp_imx8ulp_adsp_zephyr-elf",'
@@ -347,7 +363,7 @@ jobs:
 
         if [ "${build_host_macos_x86_64}" == "y" ]; then
           MATRIX_TESTENVS+='{
-              "name": "macos-11-x86_64",
+              "name": "macos-15-x86_64",
               "runner": "zephyr-runner-v2-macos-arm64-2xlarge",
               "container": "",
               "bundle-host": "macos-x86_64",
@@ -357,7 +373,7 @@ jobs:
 
         if [ "${build_host_macos_aarch64}" == "y" ]; then
           MATRIX_TESTENVS+='{
-              "name": "macos-11-aarch64",
+              "name": "macos-15-aarch64",
               "runner": "zephyr-runner-v2-macos-arm64-2xlarge",
               "container": "",
               "bundle-host": "macos-aarch64",
@@ -367,7 +383,7 @@ jobs:
 
         if [ "${build_host_windows_x86_64}" == "y" ]; then
           MATRIX_TESTENVS+='{
-              "name": "windows-2019-x86_64",
+              "name": "windows-2022-x86_64",
               "runner": "zephyr-runner-v2-windows-x64-2xlarge",
               "container": "",
               "bundle-host": "windows-x86_64",
@@ -426,6 +442,7 @@ jobs:
     runs-on:
       group: ${{ matrix.host.runner }}
     container: ${{ matrix.host.container }}
+    timeout-minutes: 720 
 
     defaults:
       run:
@@ -840,6 +857,8 @@ jobs:
       group: ${{ matrix.host.runner }}
     container: ${{ matrix.host.container }}
 
+    env:
+      TAR_OPTIONS: --no-same-owner
     defaults:
       run:
         shell: bash
@@ -926,6 +945,8 @@ jobs:
       run: |
         POKY_BASE=${GITHUB_WORKSPACE}/meta-zephyr-sdk
         export META_DOWNLOADS="${POKY_DOWNLOADS}"
+        sudo apt-get update
+        sudo apt-get install -y lz4 zstd
 
         # Check out Poky
         ${POKY_BASE}/scripts/meta-zephyr-sdk-clone.sh
@@ -1136,13 +1157,17 @@ jobs:
         path: repository
         persist-credentials: false
 
+    - name: Download Version
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+        pattern: version
+
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        # NOTE: This downloads all build artifacts, including the toolchains and host tools for
-        #       the irrelevant hosts, because the download-artifact action does not support
-        #       specifying wildcards in the artifact name.
         path: artifacts
+        pattern: "*_${{ matrix.host.name }}*"
 
     - name: Create distribution bundle
       run: |
@@ -1530,7 +1555,7 @@ jobs:
               PLATFORM_ARGS+="-p qemu_cortex_m0 "
               PLATFORM_ARGS+="-p mps2/an385 "
               PLATFORM_ARGS+="-p mps2/an521/cpu0 "
-              PLATFORM_ARGS+="-p mps3/an547 "
+              PLATFORM_ARGS+="-p mps3/corstone300/an547 "
               ;;
             # TODO: Release the microblaze arch source in a public repo
             # microblazeel-zephyr-elf)
@@ -1539,14 +1564,15 @@ jobs:
             mips-zephyr-elf)
               PLATFORM_ARGS+="-p qemu_malta "
               ;;
-            nios2-zephyr-elf)
-              PLATFORM_ARGS+="-p qemu_nios2 "
-              ;;
             riscv64-zephyr-elf)
               PLATFORM_ARGS+="-p qemu_riscv32 "
               PLATFORM_ARGS+="-p qemu_riscv32e "
               PLATFORM_ARGS+="-p qemu_riscv64 "
               ;;
+            # not fully enabled in zephyr yet
+            # rx-zephyr-elf)
+            #   PLATFORM_ARGS+="-p qemu_rx "
+            #   ;;
             sparc-zephyr-elf)
               PLATFORM_ARGS+="-p qemu_leon3 "
               ;;
@@ -1563,7 +1589,7 @@ jobs:
               PLATFORM_ARGS+="-p qemu_xtensa/dc233c/mmu "
               ;;
             xtensa-espressif_esp32_zephyr-elf)
-              PLATFORM_ARGS+="-p esp32_devkitc_wroom/esp32/procpu "
+              PLATFORM_ARGS+="-p esp32_devkitc/esp32/procpu "
               ;;
             xtensa-espressif_esp32s2_zephyr-elf)
               PLATFORM_ARGS+="-p esp32s2_saola "
@@ -1575,14 +1601,27 @@ jobs:
               PLATFORM_ARGS+="-p intel_adsp/ace15_mtpm "
               ;;
             xtensa-intel_ace30_ptl_zephyr-elf)
-              PLATFORM_ARGS+="-p intel_adsp/ace30_ptl "
+              PLATFORM_ARGS+="-p intel_adsp/ace30/ptl "
               ;;
             xtensa-intel_tgl_adsp_zephyr-elf)
               PLATFORM_ARGS+="-p intel_adsp/cavs25 "
               ;;
             xtensa-mtk_mt8195_adsp_zephyr-elf)
-              # xtensa-mtk_mt8195_adsp_zephyr-elf is untested because no
+              # Not merged yet, see Zephyr #81154
+              #PLATFORM_ARGS+="-p mt8195/mt8195/adsp"
+              ;;
+            xtensa-mtk_mt818x_adsp_zephyr-elf)
+              # Not merged yet, see Zephyr #81154
+              #PLATFORM_ARGS+="-p mt818x/mt818x/adsp"
+              ;;
+            xtensa-mtk_mt8196_adsp_zephyr-elf)
+              # Not merged yet, see Zephyr #81154
+              #PLATFORM_ARGS+="-p mt8196/mt8196/adsp"
+              ;;
+            xtensa-mtk_mt8365_adsp_zephyr-elf)
+              # xtensa-mtk_mt8365_adsp_zephyr-elf is untested because no
               # upstream user platform is currently available.
+              #PLATFORM_ARGS+="-p mt8365/mt8365/adsp"
               ;;
             xtensa-nxp_imx_adsp_zephyr-elf)
               PLATFORM_ARGS+="-p imx8qm_mek/mimx8qm6/adsp "
@@ -1609,7 +1648,7 @@ jobs:
               # upstream user platform is currently available.
               ;;
             xtensa-sample_controller_zephyr-elf)
-              PLATFORM_ARGS+="-p qemu_xtensa "
+              PLATFORM_ARGS+="-p qemu_xtensa/dc233c "
               ;;
             xtensa-sample_controller32_zephyr-elf)
               # xtensa-sample_controller32_zephyr-elf is untested because no
