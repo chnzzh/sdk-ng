@@ -627,7 +627,7 @@ jobs:
         path: ${{ runner.temp }}
 
     - name: Configure AWS Credentials
-      if: ${{ secrets.AWS_CACHE_SDK_ACCESS_KEY_ID != '' }}
+      if: ${{ env.AWS_CACHE_SDK_ACCESS_KEY_ID != '' || github.repository == 'zephyrproject-rtos/sdk-ng' }}
       continue-on-error: true
       uses: aws-actions/configure-aws-credentials@v4
       with:
@@ -636,7 +636,7 @@ jobs:
         aws-region: us-east-1
 
     - name: Download cached source files
-      if: ${{ secrets.AWS_CACHE_SDK_ACCESS_KEY_ID != '' }}
+      if: ${{ env.AWS_CACHE_SDK_ACCESS_KEY_ID != '' || github.repository == 'zephyrproject-rtos/sdk-ng' }}
       continue-on-error: true
       run: |
         SRC_CACHE_BASE="s3://cache-sdk/crosstool-ng-sources"
@@ -806,7 +806,7 @@ jobs:
         limit-access-to-actor: true
 
     - name: Sync downloaded source files to cache
-      if: ${{ secrets.AWS_CACHE_SDK_ACCESS_KEY_ID != '' }}
+      if: ${{ env.AWS_CACHE_SDK_ACCESS_KEY_ID != '' || github.repository == 'zephyrproject-rtos/sdk-ng' }}
       continue-on-error: true
       run: |
         pushd ${WORKSPACE}/sources
@@ -898,7 +898,7 @@ jobs:
         persist-credentials: false
 
     - name: Configure AWS Credentials
-      if: ${{ secrets.AWS_CACHE_SDK_ACCESS_KEY_ID != '' }}
+      if: ${{ env.AWS_CACHE_SDK_ACCESS_KEY_ID != '' || github.repository == 'zephyrproject-rtos/sdk-ng' }}
       continue-on-error: true
       uses: aws-actions/configure-aws-credentials@v4
       with:
@@ -907,7 +907,7 @@ jobs:
         aws-region: us-east-1
 
     - name: Download cached source files (Linux)
-      if: startsWith(matrix.host.name, 'linux-') && secrets.AWS_CACHE_SDK_ACCESS_KEY_ID != ''
+      if: startsWith(matrix.host.name, 'linux-') && (env.AWS_CACHE_SDK_ACCESS_KEY_ID != '' || github.repository == 'zephyrproject-rtos/sdk-ng')
       continue-on-error: true
       run: |
         SRC_CACHE_BASE="s3://cache-sdk/poky-sources"
@@ -963,7 +963,7 @@ jobs:
         limit-access-to-actor: true
 
     - name: Sync downloaded source files to cache (Linux)
-      if: startsWith(matrix.host.name, 'linux-') && secrets.AWS_CACHE_SDK_ACCESS_KEY_ID != ''
+      if: startsWith(matrix.host.name, 'linux-') && (env.AWS_CACHE_SDK_ACCESS_KEY_ID != '' || github.repository == 'zephyrproject-rtos/sdk-ng')
       continue-on-error: true
       run: |
         pushd ${POKY_DOWNLOADS}
